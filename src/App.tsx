@@ -1,53 +1,42 @@
-import { useEffect, useState } from "react";
-import type { Schema } from "../amplify/data/resource";
-import { useAuthenticator } from '@aws-amplify/ui-react';
-import { generateClient } from "aws-amplify/data";
+import * as React from 'react';
+import { Flex, TextAreaField, Loader, Text, View, Button } from "@aws-amplify/ui-react"
+import { useAIGeneration } from "./client";
 
-const client = generateClient<Schema>();
+export default function App() {
+  const [description, setDescription] = React.useState("");
+  const [{ data, isLoading }, generateRecipe] =
+    useAIGeneration("generateRecipe");
 
-function App() {
-
- // const { signOut } = useAuthenticator();
- const { user, signOut } = useAuthenticator();
-  const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
-
-  useEffect(() => {
-    client.models.Todo.observeQuery().subscribe({
-      next: (data) => setTodos([...data.items]),
-    });
-  }, []);
-
-  function createTodo() {
-    client.models.Todo.create({ content: window.prompt("Todo content") });
-  }
-
-    
-  function deleteTodo(id: string) {
-    client.models.Todo.delete({ id })
-  }
+  const handleClick = async () => {
+    generateRecipe({ description });
+  };
 
   return (
-    <main>
-            <h1>{user?.signInDetails?.loginId}'s todos</h1>
-      <h1>My todos</h1>
-      <button onClick={createTodo}>+ new</button>
-      <ul>
-        {todos.map((todo) => (
-          <li 
-          onClick={() => deleteTodo(todo.id)}
-          key={todo.id}>{todo.content}</li>
-        ))}
-      </ul>
-      <div>
-        🥳 App successfully hosted. Try creating a new todo.
-        <br />
-        <a href="https://docs.amplify.aws/react/start/quickstart/#make-frontend-updates">
-          Review next step of this tutorial.
-        </a>
-      </div>
-      <button onClick={signOut}>Sign out</button>
-    </main>
+    <Flex direction="column">
+      <Flex direction="row">
+        <TextAreaField
+          autoResize
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          label="Description"
+        />
+        <Button onClick={handleClick}>Generate recipe</Button>
+      </Flex>
+      {isLoading ? (
+        <Loader variation="linear" />
+      ) : (
+        <>
+          <Text fontWeight="bold">{data?.name}</Text>
+          <View as="ul">
+            {data?.ingredients?.map((ingredient) => (
+              <View as="li" key={ingredient}>
+                {ingredient}
+              </View>
+            ))}
+          </View>
+          <Text>{data?.instructions}</Text>
+        </>
+      )}
+    </Flex>
   );
 }
-
-export default App;
