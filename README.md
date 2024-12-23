@@ -1,25 +1,23 @@
-## AWS Amplify React+Vite Starter Template
+# Amplify AI Example: Claude AI
 
-This repository provides a starter template for creating applications using React+Vite and AWS Amplify, emphasizing easy setup for authentication, API, and database capabilities.
+This is a NextJS application that is built like Claude.ai or ChatGPT where you can see past conversations and resume conversations.
 
-## Overview
+This example uses:
 
-This template equips you with a foundational React application integrated with AWS Amplify, streamlined for scalability and performance. It is ideal for developers looking to jumpstart their project with pre-configured AWS services like Cognito, AppSync, and DynamoDB.
+- Amplify Gen2
+- NextJS App router
+- Amplify UI components
 
-## Features
+## Getting Started
 
-- **Authentication**: Setup with Amazon Cognito for secure user authentication.
-- **API**: Ready-to-use GraphQL endpoint with AWS AppSync.
-- **Database**: Real-time database powered by Amazon DynamoDB.
+### Prerequisites
 
-## Deploying to AWS
+- Node.js 18+ installed
+- AWS account that has been set up for AWS Amplify and has access to the Claude models in Amazon Bedrock
 
-For detailed instructions on deploying your application, refer to the [deployment section](https://docs.amplify.aws/react/start/quickstart/#deploy-a-fullstack-app-to-aws) of our documentation.
+### Installation
 
-## Security
-
-See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
-
-## License
-
-This library is licensed under the MIT-0 License. See the LICENSE file.
+1. Clone the repository and `cd` into the `claude-ai` directory
+2. Install the dependencies with your favorite Javscript package manager. For example, `npm install`
+3. Run `npx ampx sandbox` to spin up a sandbox cloud backend
+4. Run `npm run dev` to start up NextJS locally
